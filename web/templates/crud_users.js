@@ -29,6 +29,10 @@ $(function(){
             showPageSizeSelector: true,
             allowedPageSizes: [8, 12, 20]
         },
+		onEditorPreparing(e) {
+          if(e.parentType == "dataRow" && e.dataField == "password")
+              e.editorOptions.mode = 'password';
+		},
         columns: [{
             dataField: "id",
             dataType: "number",
@@ -40,7 +44,13 @@ $(function(){
         }, {
             dataField: "fullname"
         }, {
-            dataField: "password"
+            dataField: "password",
+            editorOptions: {
+                mode: "password"
+            },
+            customizeText: function(e){
+                return '*********';
+            }
         }, ],
     }).dxDataGrid("instance");
 });

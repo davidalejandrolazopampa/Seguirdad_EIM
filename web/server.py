@@ -1,6 +1,8 @@
 from flask import Flask,render_template, request, session, Response, redirect
 from database import connector
 from model import entities
+from passlib.hash import sha256_crypt
+
 import json
 import time
 
@@ -43,11 +45,15 @@ def create_test_users():
 @app.route('/users', methods = ['POST'])
 def create_user():
     c =  json.loads(request.form['values'])
+
+    password = c['password']
+    hashed_password = sha256_crypt.hash(password)
+
     user = entities.User(
         username=c['username'],
         name=c['name'],
         fullname=c['fullname'],
-        password=c['password']
+        password=hashed_password
     )
     session = db.getSession(engine)
     session.add(user)
@@ -153,19 +159,44 @@ def authenticate():
     message = json.loads(request.data)
     username = message['username']
     password = message['password']
-    #2. look in database
     db_session = db.getSession(engine)
+
     try:
         user = db_session.query(entities.User
-            ).filter(entities.User.username == username
-            ).filter(entities.User.password == password
-            ).one()
-        session['logged_user'] = user.id
-        message = {'message': 'Authorized'}
-        return Response(message, status=200, mimetype='application/json')
+             ).filter(entities.User.username == username
+             ).one()
+
+        if user and sha256_crypt.verify(password, user.password):
+            session['logged_user'] = user.id
+            message = {'message': 'Authorized'}
+            return Response(message, status=200, mimetype='application/json')
+        else:
+            message = {'message': 'Unauthorized'}
+            return Response(message, status=401, mimetype='application/json')
+
     except Exception:
         message = {'message': 'Unauthorized'}
         return Response(message, status=401, mimetype='application/json')
+
+# def authenticate_old(): #la version de David
+#     time.sleep(3)
+#     message = json.loads(request.data)
+#     username = message['username']
+#     password = message['password']
+#     #2. look in database
+#     db_session = db.getSession(engine)
+#     try:
+#         user = db_session.query(entities.User
+#             ).filter(entities.User.username == username
+#             ).filter(entities.User.password == password
+#             ).one()
+#         session['logged_user'] = user.id
+#         message = {'message': 'Authorized'}
+#         return Response(message, status=200, mimetype='application/json')
+#     except Exception:
+#         message = {'message': 'Unauthorized'}
+#         return Response(message, status=401, mimetype='application/json')
+
 #Chat
 @app.route('/current', methods = ["GET"])
 def current_user():
