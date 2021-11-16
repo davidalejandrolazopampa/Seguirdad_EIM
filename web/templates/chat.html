@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/libs/bootstrap.min.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="chat.js"></script>
+    <style type="text/css">
+            .card.chat-room .members-panel-1,
+            .card.chat-room .chat-1 {
+            position: relative;
+            overflow-y: scroll;
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+            }
+
+            .card.chat-room .members-panel-1 {
+            height: 480px;
+
+            }
+
+            .card.chat-room .chat-1 {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+            height: 480px; }
+
+            .card.chat-room .friend-list li {
+            border-bottom: 1px solid #e0e0e0; }
+            .card.chat-room .friend-list li:last-of-type {
+            border-bottom: none; }
+
+
+
+            .rare-wind-gradient {
+            background-image: -webkit-gradient(linear, left bottom, left top, from(#a8edea), to(#fed6e3));
+            background-image: -webkit-linear-gradient(bottom, #a8edea 0%, #fed6e3 100%);
+            background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+            }
+    </style>
+
+
+</head>
+<body onload="whoami()" style="margin:0">
+
+ <div class="card rare-wind-gradient chat-room" id="davlazop">
+  <div class="card-body">
+
+    <!-- Grid row -->
+      <div class="row px-lg-2 px-2">
+
+      <!-- Grid column -->
+      <div class="col-md-2 col-xl-2 px-0">
+
+        <h6 class="font-weight-bold mb-3 text-center text-lg-left">
+            <center>Contactos</center>
+        </h6>
+        <div class="white z-depth-1 px-2 pt-3 pb-0 members-panel-1 scrollbar-light-blue">
+          <ul class="list-unstyled friend-list">
+              <div id="allusers"></div>
+
+          </ul>
+        </div>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
+
+        <div class="chat-message">
+
+          <ul class="list-unstyled chat-1 scrollbar-light-blue">
+                <div class="alert alert-success">
+                    <a>CHAT</a>
+                </div>
+                <div id="messages"></div>
+          </ul>
+          <div class="white">
+            <div class="form-group basic-textarea">
+              <input type="text" class="form-control" id="postmessage">
+            </div>
+          </div>
+          <button id="btn_tweet" class="btn btn-success" type="button" onclick="sendMessage()">Enviar</button>
+
+        </div>
+
+      </div>
+      <!-- Grid column -->
+      <div class="col-md-2 col-xl-2 px-0 ">
+
+
+        <div class="white z-depth-1 px-2 pt-3 pb-0">
+             <div  class="alert alert-primary" role="alert">
+                 <img src="/static/images/user.png" width="150" height="150" />
+                 <p>Nombre: <label id="cu_name"></label></p>
+                 <p>User: <label id="cu_username"></label></p>
+                 <center>
+                     <button type="buttton" class="btn btn-danger" onclick="logout()">Logout</button>
+                 </center>
+            </div>
+        </div>
+
+      </div>
+      </div>
+    <!-- Grid row -->
+
+  </div>
+</div>
+<script>
+
+</script>
+</body>
+
+</html>
