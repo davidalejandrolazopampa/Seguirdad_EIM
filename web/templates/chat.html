@@ -1,120 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
 
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <title>Chat</title>
 
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script src="/static/js/libs/bootstrap.min.js" ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="chat.js"></script>
-    <style type="text/css">
-            .card.chat-room .members-panel-1,
-            .card.chat-room .chat-1 {
-            position: relative;
-            overflow-y: scroll;
-            box-shadow: inset 0 0 5px grey;
-            border-radius: 10px;
-            }
-
-            .card.chat-room .members-panel-1 {
-            height: 480px;
-
-            }
-
-            .card.chat-room .chat-1 {
-            box-shadow: inset 0 0 5px grey;
-            border-radius: 10px;
-            height: 480px; }
-
-            .card.chat-room .friend-list li {
-            border-bottom: 1px solid #e0e0e0; }
-            .card.chat-room .friend-list li:last-of-type {
-            border-bottom: none; }
-
-
-
-            .rare-wind-gradient {
-            background-image: -webkit-gradient(linear, left bottom, left top, from(#a8edea), to(#fed6e3));
-            background-image: -webkit-linear-gradient(bottom, #a8edea 0%, #fed6e3 100%);
-            background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
-            }
-    </style>
-
-
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="chat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
+	<script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://use.typekit.net/hoy3lrg.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> 
+	<link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+	<link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+	<link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
+	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+  <link rel="stylesheet" type="text/css" href="/static/css/chat_styles.css">
 </head>
-<body onload="whoami()" style="margin:0">
-
- <div class="card rare-wind-gradient chat-room" id="davlazop">
-  <div class="card-body">
-
-    <!-- Grid row -->
-      <div class="row px-lg-2 px-2">
-
-      <!-- Grid column -->
-      <div class="col-md-2 col-xl-2 px-0">
-
-        <h6 class="font-weight-bold mb-3 text-center text-lg-left">
-            <center>Contactos</center>
-        </h6>
-        <div class="white z-depth-1 px-2 pt-3 pb-0 members-panel-1 scrollbar-light-blue">
-          <ul class="list-unstyled friend-list">
-              <div id="allusers"></div>
-
-          </ul>
+<body onload="whoami()">
+  <div id="frame">
+    <div id="sidepanel">
+      <div id="profile">
+        <div class="wrap">
+          <img id="profile-img" src="/static/images/user.png" class="online" alt="" />
+          <p id="cu_name"></p>
         </div>
-
       </div>
-      <!-- Grid column -->
-
-      <!-- Grid column -->
-      <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
-
-        <div class="chat-message">
-
-          <ul class="list-unstyled chat-1 scrollbar-light-blue">
-                <div class="alert alert-success">
-                    <a>CHAT</a>
-                </div>
-                <div id="messages"></div>
-          </ul>
-          <div class="white">
-            <div class="form-group basic-textarea">
-              <input type="text" class="form-control" id="postmessage">
-            </div>
-          </div>
-          <button id="btn_tweet" class="btn btn-success" type="button" onclick="sendMessage()">Enviar</button>
-
+      <div id="search">
+        <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+        <input type="text" placeholder="Search contacts..." />
+      </div>
+      <div id="allusers">
+        <ul>
+          
+        </ul>
+      </div>
+      <div id="bottom-bar">
+        <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>_____</span></button>
+        <button id="settings" onclick="logout()"><i class="fa fa-lock fa-fw" aria-hidden="true"></i> <span>Cerrar Seccion</span></button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="contact-profile">
+        <img src="/static/images/user.png" alt="" />
+        <p >Chat</p>
+      </div>
+      <div class="messages" id="messages">
+        <ul>
+        </ul>
+      </div>
+      <div class="message-input">
+        <div class="wrap">
+        <input type="text" id="postmessage" placeholder="Write your message..." />
+        <button class="submit" onclick="sendMessage()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
         </div>
-
       </div>
-      <!-- Grid column -->
-      <div class="col-md-2 col-xl-2 px-0 ">
-
-
-        <div class="white z-depth-1 px-2 pt-3 pb-0">
-             <div  class="alert alert-primary" role="alert">
-                 <img src="/static/images/user.png" width="150" height="150" />
-                 <p>Nombre: <label id="cu_name"></label></p>
-                 <p>User: <label id="cu_username"></label></p>
-                 <center>
-                     <button type="buttton" class="btn btn-danger" onclick="logout()">Logout</button>
-                 </center>
-            </div>
-        </div>
-
-      </div>
-      </div>
-    <!-- Grid row -->
-
+    </div>
   </div>
-</div>
-<script>
-
-</script>
 </body>
-
 </html>

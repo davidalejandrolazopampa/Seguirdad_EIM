@@ -178,26 +178,7 @@ def authenticate():
         message = {'message': 'Unauthorized'}
         return Response(message, status=401, mimetype='application/json')
 
-# def authenticate_old(): #la version de David
-#     time.sleep(3)
-#     message = json.loads(request.data)
-#     username = message['username']
-#     password = message['password']
-#     #2. look in database
-#     db_session = db.getSession(engine)
-#     try:
-#         user = db_session.query(entities.User
-#             ).filter(entities.User.username == username
-#             ).filter(entities.User.password == password
-#             ).one()
-#         session['logged_user'] = user.id
-#         message = {'message': 'Authorized'}
-#         return Response(message, status=200, mimetype='application/json')
-#     except Exception:
-#         message = {'message': 'Unauthorized'}
-#         return Response(message, status=401, mimetype='application/json')
-
-#Chat
+#CHAT
 @app.route('/current', methods = ["GET"])
 def current_user():
     db_session = db.getSession(engine)
