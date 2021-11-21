@@ -1,70 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-<head>
-  <meta charset="UTF-8">
-  <meta name="robots" content="noindex">
+<html class=''>
+	<head>
+		<title>Chat Seguridad</title>
+		<meta charset='UTF-8'>
+		<meta name="robots" content="noindex">
+		<script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
+		<script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="https://use.typekit.net/hoy3lrg.js"></script>
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
+		<link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+		<link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+		<link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
+		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+		<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+		<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+		<link rel="stylesheet" type="text/css" href="/static/css/chat_styles.css">
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		
+	</head>
+	<body onload="startSession()">
+		<div id="frame">
+			<div id="sidepanel">
+				<div id="profile">
+					<div class="wrap">
+						<img id="profile-img" src="/static/images/user.png" class="online" alt="" />
+						<p id="fromlastname"></p>
+					</div>
+				</div>
+				<div id="search">
+					<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+					<input type="text" placeholder="Search contacts..." />
+				</div>
+				<div id="contacts">
+					<ul>
 
-  <title>Chat</title>
+					</ul>
+				</div>
+				<div id="bottom-bar">
+					<button id="addcontact" onclick="createUsers()"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Create Users</span></button>
+					<button id="settings" onclick="logout()"><i class="fa fa-lock fa-fw" aria-hidden="true"></i> <span>Logout</span></button>
+				</div>
+			</div>
+			<div class="content">
+				<div class="contact-profile">
+					<img src="/static/images/user.png" alt="" />
+					<p id="tolastname"></p>
+				</div>
+				<div class="messages">
+					<ul>
+					</ul>
+				</div>
+				<div class="message-input">
+					<div class="wrap">
+					<input type="text" id="messageInput" placeholder="Write your message..." />
+					<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+		<script >
+		$(".messages").animate({ scrollTop: $(document).height() }, "fast");
 
-  <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="chat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
-	<script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="https://use.typekit.net/hoy3lrg.js"></script>
-  <script>try{Typekit.load({ async: true });}catch(e){}</script>
-  
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> 
-	<link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
-	<link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
-	<link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
-	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
-	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
-  <link rel="stylesheet" type="text/css" href="/static/css/chat_styles.css">
-</head>
-<body onload="whoami()">
-  <div id="frame">
-    <div id="sidepanel">
-      <div id="profile">
-        <div class="wrap">
-          <img id="profile-img" src="/static/images/user.png" class="online" alt="" />
-          <p id="cu_name"></p>
-        </div>
-      </div>
-      <div id="search">
-        <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-        <input type="text" placeholder="Search contacts..." />
-      </div>
-      <div id="allusers">
-        <ul>
-          
-        </ul>
-      </div>
-      <div id="bottom-bar">
-        <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>_____</span></button>
-        <button id="settings" onclick="logout()"><i class="fa fa-lock fa-fw" aria-hidden="true"></i> <span>Cerrar Seccion</span></button>
-      </div>
-    </div>
-    <div class="content">
-      <div class="contact-profile">
-        <img src="/static/images/user.png" alt="" />
-        <p >Chat</p>
-      </div>
-      <div class="messages" id="messages">
-        <ul>
-        </ul>
-      </div>
-      <div class="message-input">
-        <div class="wrap">
-        <input type="text" id="postmessage" placeholder="Write your message..." />
-        <button class="submit" onclick="sendMessage()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+		var lastRefresh;
+		var idUserConnected;
+		var idUserToTalk;
+
+		function startSession() {
+			console.log("startSession");
+			$.ajax({
+				url: '/start',
+				type:'GET',
+				contentType: 'application/json',
+				dataType:'json',
+				success: function(response){
+					idUserConnected = response.id;
+				},
+				async: false,
+				error: function(response){
+					idUserConnected = idUserConnected;
+					alert(JSON.stringify(response));
+				}
+			});
+			getNameUserConnected(idUserConnected);
+			getAllUsers(idUserConnected);
+		}
+
+		function updateMessages(){
+				$('.messages ul').empty();
+				getDataChats();
+				scrollDown();
+		}
+
+
+		function changeWindow(val) {
+			idUserToTalk = val;
+			console.log("changeWindow");
+			updateMessages();
+			scrollDown();
+			setInterval(updateMessages, 6000);
+		}
+
+		function talkTo(idUserToTalk_) {
+			idUserToTalk = idUserToTalk_;
+			console.log("talkTo");
+			getDataChats();
+		}
+
+		function getDataChats(){
+			//var chatsDescargados = new Array();
+
+			console.log("getDataChats");
+			getNameUserToTalk(idUserToTalk);
+			var url = '/chat/getConversation/'.concat(idUserConnected.toString(),'/and/',idUserToTalk.toString());
+			$.ajax({
+				url: url,
+				type:'GET',
+				contentType: 'application/json',
+				dataType:'json',
+				async: false,
+				success: function(response){
+					var arrayLength = response.length;
+					for (var i = 0; i < arrayLength; i++) {
+						if(response[i]["user_from_id"]==idUserConnected){
+							whoIs = "sent"
+						}
+						else{
+							whoIs = "replies"
+						}
+						$('<li class="'+whoIs+'"><img src="/static/images/user.png" alt="" /><p>' + response[i]["content"] + '</p></li>').appendTo($('.messages ul'));
+						//chatsDescargados.push(response[i]["id"]);
+						}
+				},
+				error: function(response){
+					alert("Es el mejor momento para comenzar a hablar con un nuevo amigo! 😁");
+				}
+			});
+
+		/*
+			var message = JSON.stringify({
+						"chatsDescargados": chatsDescargados
+						});
+
+			$.ajax({
+				url:'/chat/firstCheck/'.concat(idUserConnected.toString(),'/and/',idUserToTalk.toString()),
+				type:'PUT',
+				contentType: 'application/json',
+				data : message,
+				dataType:'json',
+				success: function(response){
+					alert(JSON.stringify(response));
+				},
+				error: function(response){
+					alert(JSON.stringify(response));
+				}
+
+			});
+
+		*/
+
+			}
+
+
+		$("#profile-img").click(function() {
+			$("#status-options").toggleClass("active");
+		});
+
+		$(".expand-button").click(function() {
+		$("#profile").toggleClass("expanded");
+			$("#contacts").toggleClass("expanded");
+		});
+
+		$("#status-options ul li").click(function() {
+			$("#profile-img").removeClass();
+			$("#status-online").removeClass("active");
+			$("#status-away").removeClass("active");
+			$("#status-busy").removeClass("active");
+			$("#status-offline").removeClass("active");
+			$(this).addClass("active");
+
+			if($("#status-online").hasClass("active")) {
+				$("#profile-img").addClass("online");
+			} else if ($("#status-away").hasClass("active")) {
+				$("#profile-img").addClass("away");
+			} else if ($("#status-busy").hasClass("active")) {
+				$("#profile-img").addClass("busy");
+			} else if ($("#status-offline").hasClass("active")) {
+				$("#profile-img").addClass("offline");
+			} else {
+				$("#profile-img").removeClass();
+			};
+
+			$("#status-options").removeClass("active");
+		});
+
+		function logout(){
+			window.location.href = "http://127.0.0.1:5000/logout";
+
+
+		}
+
+		function createUsers(){
+			window.location.href = "http://127.0.0.1:5000/static/crud_users.html";
+		}
+
+		function scrollDown(){
+			$(".messages").animate({ scrollTop: $(document).height()+10000 }, "fast");
+		}
+
+		function newMessage() {
+			message = $('#messageInput').val();
+			if($.trim(message) != '') {
+				$('<li class="sent"><img src="/static/images/user.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+				$('.message-input input').val(null);
+				$('#lastChat').html('<span>You: </span>' + message);
+				scrollDown();
+				return message;
+			}
+		};
+
+		function sendMessage(textMessage) {
+			var message = JSON.stringify({
+						"content": textMessage,
+						"user_from_id": idUserConnected,
+										"user_to_id": idUserToTalk
+						});
+			$.ajax({
+					url:'/newMesssage',
+					type:'POST',
+					contentType: 'application/json',
+					data : message,
+					dataType:'json',
+					error: function(response){
+									if (response['status']!=200){
+										alert("Hola! Hubo un error al enviar su mensaje. Verifique que esté escribiendo su mensaje dentro del recuadro permitido.");
+									}
+					}
+				});
+		}
+
+
+		function getNameUserToTalk(id) {
+			console.log("getNameUserToTalk");
+			var url = '/user/'.concat(id.toString());
+			var lastname;
+			$.ajax({
+				url: url,
+				type:'GET',
+				contentType: 'application/json',
+				dataType:'json',
+				success: function(response){
+					lastname = "".concat(response["name"]," ",response["lastname"])
+					$('#smallTolastname').text(lastname);
+					$('#tolastname').text(lastname);
+				},
+				error: function(response){
+					alert(JSON.stringify(response));
+				}
+			});
+		}
+
+		function getNameUserConnected(id) {
+			console.log("getNameUserConnected");
+			var url = '/user/'.concat(id.toString());
+			var lastname;
+			$.ajax({
+				url: url,
+				type:'GET',
+				contentType: 'application/json',
+				dataType:'json',
+				success: function(response){
+					lastname = "".concat(response["name"]," ",response["lastname"])
+					$('#fromlastname').text(lastname);
+				},
+				error: function(response){
+					alert(JSON.stringify(response));
+				}
+			});
+		}
+
+
+		function getAllUsers(id){
+			console.log("getAllUsers");
+			var url = '/user/allExcept/'.concat(id.toString());
+			var lastname;
+			$.ajax({
+				url: url,
+				type:'GET',
+				contentType: 'application/json',
+				dataType:'json',
+				success: function(response){
+					var i = 0;
+					$.each(response, function () {
+						lastname = "".concat(response[i]["name"]," ",response[i]["lastname"]);
+						idUser = response[i]["id"];
+						var lastMessage;
+						var lastMessageFrom;
+						var who;
+						$.ajax({
+							url: '/chat/getLastConversation/'.concat(idUser.toString(),'/and/',id.toString()),
+							type:'GET',
+							contentType: 'application/json',
+							dataType:'json',
+							async: false,
+							success: function(response){
+								lastMessage = response.content;
+								lastMessageFrom = response.user_from_id;
+							}
+							});
+						f = '<li class="contact" ><div class="wrap" onclick="changeWindow('+idUser+')" ><span class="contact-status online"></span><img src="/static/images/user.png" alt="" /> <div class="meta"> <p  class="name">';
+						f += lastname;
+						if(lastMessageFrom == id){
+							who = 'You: ';
+						}else if (lastMessage != null) {
+							who = response[i]["name"]+": ";
+						}else{
+							who = '¡Soy nuevo aquí!';
+							lastMessage = ''
+						}
+						f += '</p><p class="preview" id="lastChat"><span>'+who+'</span>'+lastMessage+'</p> </div> </div> </li>';
+						i += 1;
+						$('#contacts ul').append(f);
+
+					});
+				},
+				error: function(response){
+					alert(JSON.stringify(response));
+				}
+			});
+		}
+
+		$('.submit').click(function() {
+		message = newMessage();
+		sendMessage(message);
+		});
+
+		$(window).on('keydown', function(e) {
+		if (e.which == 13) {
+			message = newMessage();
+			sendMessage(message);
+			return false;
+		}
+		});
+		//# sourceURL=pen.js
+		</script>
+	</body>
 </html>
