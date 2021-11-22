@@ -103,14 +103,25 @@
             contentType: 'application/json',
             data : message,
             dataType:'json',
-						success: function(response) {
-							$('#loading').hide();
-							$('#ok').show();
-							window.location.href = "http://127.0.0.1:5000/"
+			success: function(response) {
+							//$('#loading').hide();
+							//$('#ok').show();
+							//window.location.href = "http://127.0.0.1:5000/"
             },
             error: function(response){
-							$('#loading').hide();
-							$('#fail').show();
+							//$('#loading').hide();
+							//$('#fail').show();
+
+                if(response['status']==401){
+                    $('#loading').hide();
+                    $('#fail').show()
+                }else{
+                    $('#loading').hide();
+                    $('#ok').show();
+                    var url = 'http://' + document.domain + ':' + location.port;
+                    $(location).attr('href',url);
+
+                }
             }
 
 

@@ -181,7 +181,7 @@ def get_users():
 
 @app.route('/users', methods = ['POST'])
 def create_user():
-    c =  json.loads(request.form['values'])
+    c = json.loads(request.form['values'])
 
     password = c['password']
     hashed_password = sha256_crypt.hash(password)
@@ -266,15 +266,19 @@ def authenticate():
     try:
         user = db_session.query(entities.User
             ).filter(entities.User.username == username
-            ).filter(entities.User.password == password
             ).one()
-        session['logged_user']=user.id
-        message = {'message': 'Authorized'}
-        message = json.dumps(message, cls=connector.AlchemyEncoder)
-        return Response(message, status=200, mimetype='application/json')
+
+        if user and sha256_crypt.verify(password, user.password):
+            session['logged_user'] = user.id
+            message = {'message': 'Authorized'}
+            return Response(message, status=200, mimetype='application/json')
+        else:
+            message = {'message': 'Unauthorized'}
+            return Response(message, status=401, mimetype='application/json')
+
     except Exception:
         message = {'message': 'Unauthorized'}
-        message = json.dumps(message, cls=connector.AlchemyEncoder)
+        #message = json.dumps(message, cls=connector.AlchemyEncoder)
         return Response(message, status=401, mimetype='application/json')
 # - - - - - - - - - - - - - - - - - - - - - -#
 # - - - - - - C H A T  U S E R S - - - - - - #
