@@ -1,160 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Chat Seguridad</title>
-	<meta charset="UTF-8">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="/static/login/images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/static/login/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/static/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/static/login/vendor/animate/animate.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/static/login/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/static/login/vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/static/login/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/static/login/css/main.css">
-<!--===============================================================================================-->
+    <title>Chat Seguridad</title>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="/static/login/images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/login/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/login/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/login/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/login/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/static/login/css/main.css">
+    <!--===============================================================================================-->
 </head>
 <body>
 
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<div class="login100-pic js-tilt" data-tilt>
-					<img src="/static/login/images/img-01.png" alt="IMG">
-				</div>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="/static/login/images/img-01.png" alt="IMG">
+            </div>
 
-				<div class="login100-form validate-form">
+            <div class="login100-form validate-form">
 					<span class="login100-form-title">
 						Chat
 					</span>
 
-					<div class="wrap-input100">
-						<input class="input100" type="text" name="username" placeholder="Username" id="username">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+                <div class="wrap-input100">
+                    <input class="input100" type="text" name="username" placeholder="Username" id="username">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
 							<i class="fa fa-user" aria-hidden="true"></i>
 						</span>
-					</div>
+                </div>
 
-					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password" id="password">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <input class="input100" type="password" name="pass" placeholder="Password" id="password">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
-						
-					</div>
-		
 
-					<div class="wrap-input100">
-						<input class="input100" type="text" name="pin" placeholder="PIN" id="pin">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="btn btn-danger" value="pin" onclick="generatePIN()">
+                        Generate-PIN
+                    </button>
+                </div>
+
+                <div class="wrap-input100">
+                    <!-- <input class="input100" type="text" name="pin" placeholder="PIN" id="pin"> -->
+                    <input class="input100" type="password" name="pin" placeholder="PIN" id="pin" required>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
 							<i class="fa fa-cog" aria-hidden="true"></i>
 						</span>
-					</div>
-					
-					<div class="container-login100-form-btn">
-						<button class="btn btn-danger" value="pin" onclick="getPIN()">
-							Generate-PIN
-						</button>
-					</div>
+                </div>
 
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" value="login" onclick="getData()">
-							Login
-						</button>
-						<br><br>
-						<br><br>
-					</div>
-					
-
-					
-					
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" value="login" onclick="getData()">
+                        Login
+                    </button>
+                    <br><br>
+                    <br><br>
+                </div>
 
 
-					<div class="wrap-input100">
-						<img id="loading" src="/static/login/images/loading.gif" style="display: none"/>
-						<img id="ok" src="/static/login/images/correct.png" style="display: none"/>
-						<img id="fail" src="/static/login/images/fail.png" style="display: none"/>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="wrap-input100">
+                    <img id="loading" src="/static/login/images/loading.gif" style="display: none"/>
+                    <img id="ok" src="/static/login/images/correct.png" style="display: none"/>
+                    <img id="fail" src="/static/login/images/fail.png" style="display: none"/>
+                </div>
 
-	<script>
-		function getData(){
-		$('#loading').show()
-		$('#fail').hide();
-		$('#ok').hide();
-        var username = $('#username').val();
-        var password = $('#password').val();
-        var message = JSON.stringify({
-                "username": username,
-                "password": password
-            });
-        $.ajax({
-            url:'/authenticate',
-            type:'POST',
-            contentType: 'application/json',
-            data : message,
-            dataType:'json',
-			success: function(response) {
-							//$('#loading').hide();
-							//$('#ok').show();
-							//window.location.href = "http://127.0.0.1:5000/"
-            },
-            error: function(response){
-							//$('#loading').hide();
-							//$('#fail').show();
+            </div>
+        </div>
+    </div>
+</div>
 
-                if(response['status']==401){
-                    $('#loading').hide();
-                    $('#fail').show()
-                }else{
-                    $('#loading').hide();
-                    $('#ok').show();
-                    var url = 'http://' + document.domain + ':' + location.port;
-                    $(location).attr('href',url);
+<script>
+		function getData() {
+            $('#loading').show()
+            $('#fail').hide();
+            $('#ok').hide();
+            var username = $('#username').val();
+            var password = $('#password').val();
+            var pin = $('#pin').val();
+            var message = JSON.stringify({
+                    "username": username,
+                    "password": password,
+                    "pin": pin
+                });
 
+            $.ajax({
+                url:'/authenticate',
+                type:'POST',
+                contentType: 'application/json',
+                data : message,
+                dataType:'json',
+                success: function(response) {
+                                //$('#loading').hide();
+                                //$('#ok').show();
+                                //window.location.href = "http://127.0.0.1:5000/"
+                },
+                error: function(response){
+                                //$('#loading').hide();
+                                //$('#fail').show();
+
+                    if(response['status']==401){
+                        $('#loading').hide();
+                        $('#fail').show()
+                    }else{
+                        $('#loading').hide();
+                        $('#ok').show();
+                        var url = 'http://' + document.domain + ':' + location.port;
+                        $(location).attr('href',url);
+
+                    }
                 }
-            }
 
 
-        });
+            });
+    }
+
+    function generatePIN() {
+        var email = $('#username').val();
+        var message = JSON.stringify({
+                    "username": email
+                });
+
+         $.ajax({
+                url:'/generate_pin',
+                type:'POST',
+                contentType: 'application/json',
+                data : message,
+                dataType:'json',
+                success: function(response) {
+
+                },
+                error: function(response){
+
+                    if(response['status']==401){
+                        alert("F");
+                    }else{
+                        alert("Correo enviado.");
+                    }
+                }
+
+
+            });
     }
 
 
-	</script>
+
+</script>
 
 
-
 <!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+<script src="vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/tilt/tilt.jquery.min.js"></script>
-	<script >
+<script src="vendor/tilt/tilt.jquery.min.js"></script>
+<script>
 		$('.js-tilt').tilt({
 			scale: 1.1
 		})
-	</script>
+
+
+</script>
 <!--===============================================================================================-->
-	<script src="login2.js"></script>
+<script src="login2.js"></script>
 
 </body>
 </html>

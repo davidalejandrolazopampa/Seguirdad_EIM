@@ -32,23 +32,24 @@ $(function(){
                 e.editorOptions.mode = 'password';
           },
         columns: [{
-            dataField: "id",
-            dataType: "number",
-            allowEditing: false
-        }, {
-            dataField: "username"
-        }, {
-            dataField: "name"
-        }, {
-            dataField: "lastname"
-        }, {
-            dataField: "password",
-            editorOptions: {
-                mode: "password"
-            },
-            customizeText: function(e){
-                return '*********';
-            }
-        }, ],
+                    dataField: "id",
+                    dataType: "number",
+                    allowEditing: false
+                   }, {
+                    dataField: "username",
+                    validationRules: [{ type: "required" }, { type: "email" }]
+                   }, {
+                    dataField: "name"
+                   }, {
+                    dataField: "lastname"
+                   }, {
+                    dataField: "password",
+                    editorOptions: {
+                        mode: "password"
+                                   },
+                    customizeText: function(e){
+                        return '*********';
+                    }
+                  }, ],
     }).dxDataGrid("instance");
 });

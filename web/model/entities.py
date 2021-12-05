@@ -11,12 +11,15 @@ class User(connector.Manager.Base):
     lastname = Column(String(50))
     password = Column(String(100))
     username = Column(String(12))
+    pin = Column(String(6))
+
 
 class Message(connector.Manager.Base):
     __tablename__ = 'messages'
     id = Column(Integer, Sequence('message_id_seq'), primary_key=True)
     content = Column(String(500))
-    sent_on = Column(default=datetime.now())
+    #sent_on = Column(DateTime(timezone=True))
+    sent_on = Column(DateTime(timezone=True), default=datetime.now())
     last_seen = Column(DateTime())
     user_from_id = Column(Integer, ForeignKey('users.id'))
     user_to_id = Column(Integer, ForeignKey('users.id'))

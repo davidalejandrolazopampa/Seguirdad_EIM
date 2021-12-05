@@ -1,15 +1,13 @@
-from flask import Flask,render_template, request, session, Response, redirect
+from flask import Flask,render_template, request, session, Response
 from database import connector
 from model import entities
-
 from passlib.hash import sha256_crypt
+from web.extras.SCMail import SCMail
+from web.extras.TokenGen import Security
 
-from operator import itemgetter, attrgetter
 import json
-import time
-from datetime import datetime
 from sqlalchemy.sql import func
-from sqlalchemy import or_, and_
+from sqlalchemy import or_
 
 db = connector.Manager()
 engine = db.createEngine()
@@ -82,7 +80,6 @@ def delete_chat():
 # - - - - - - - - - - - - - - - - - - - - - -#
 # - - - - - - C R U D  C H A T - - - - - - - #
 # - - - - - - - - - - - - - - - - - - - - - -#
-
 @app.route('/chat/getConversation/<id1>/and/<id2>', methods = ['GET'])
 def get_chats_id(id1, id2):
     db_session = db.getSession(engine)
@@ -143,7 +140,6 @@ def get_last_chats_id(id1, id2):
         return Response(message, status=404, mimetype='application/json')
 
 
-
 @app.route('/newMesssage', methods = ['POST'])
 def newMesssage():
     try:
@@ -162,14 +158,9 @@ def newMesssage():
         message = {'message': 'Unauthorized'}
         return Response(message, status=401, mimetype='application/json')
 
-
-
 # - - - - - - - - - - - - - - - - - - - - - -#
 # - - D E F A U L T - C R U D  U S E R S - - #
 # - - - - - - - - - - - - - - - - - - - - - -#
-
-
-
 @app.route('/users', methods = ['GET'])
 def get_users():
     session = db.getSession(engine)
@@ -202,7 +193,7 @@ def update_users():
     session = db.getSession(engine)
     id = request.form['key']
     user = session.query(entities.User).filter(entities.User.id == id).first()
-    c =  json.loads(request.form['values'])
+    c = json.loads(request.form['values'])
     for key in c.keys():
         setattr(user, key, c[key])
     session.add(user)
@@ -261,6 +252,7 @@ def authenticate():
     message = json.loads(request.data)
     username = message['username']
     password = message['password']
+    pin = message['pin']
     #2. look in database
     db_session = db.getSession(engine)
     try:
@@ -268,7 +260,7 @@ def authenticate():
             ).filter(entities.User.username == username
             ).one()
 
-        if user and sha256_crypt.verify(password, user.password):
+        if user and sha256_crypt.verify(password, user.password) and user.pin == pin:
             session['logged_user'] = user.id
             message = {'message': 'Authorized'}
             return Response(message, status=200, mimetype='application/json')
@@ -334,13 +326,9 @@ def delete_message():
     session.delete(messages)
     session.commit()
     return "Deleted Message"
-
-
-
 # - - - - - - - - - - - - - - - - - - - - - - - #
 # - - - - - - - -  L O G O U T  - - - - - - - - #
 # - - - - - - - - - - - - - - - - - - - - - - - #
-
 @app.route('/logout', methods = ['GET'])
 def logout():
     session.clear()
@@ -349,7 +337,6 @@ def logout():
 # - - - - - - - - - - - - - - - - - - - - - - - #
 # - - - - - - - -  S T A R T  - - - - - - - - - #
 # - - - - - - - - - - - - - - - - - - - - - - - #
-
 @app.route('/start', methods = ['GET'])
 def start_user():
     try:
@@ -360,6 +347,28 @@ def start_user():
     except Exception:
         message = {'status': 404, 'message': 'Not Found'}
         return Response(message, status=404, mimetype='application/json')
+
+
+@app.route('/generate_pin', methods = ["POST"])
+def generate_pin():
+    message = json.loads(request.data)
+    email = message['username']
+    pin_str = Security.generate_pin()
+    mail_pin = SCMail(email, pin_str)
+    rc = mail_pin.send_email()
+
+    if rc == "202":
+        session = db.getSession(engine)
+        user = session.query(entities.User).filter(entities.User.username == email).first()
+        user.pin = pin_str
+        session.add(user)
+        session.commit()
+        message = {'message': 'Authorized'}
+        return Response(message, status=200, mimetype='application/json')
+    else:
+        message = {'message': 'Unauthorized'}
+        return Response(message, status=401, mimetype='application/json')
+
 
 if __name__ == '__main__':
     app.secret_key = ".."
