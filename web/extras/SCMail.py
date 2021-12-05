@@ -17,7 +17,6 @@ class SCMail:
             subject=self.subject,
             html_content=self.content
         )
-        #API_KEY = "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"
         try:
             sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 
