@@ -12,7 +12,7 @@ class SCMail:
 
     def send_email(self):
         message = Mail(
-            from_email="raul.mosquera@utec.edu.pe",
+            from_email="david.lazo@utec.edu.pe",
             to_emails=self.receipt,
             subject=self.subject,
             html_content=self.content

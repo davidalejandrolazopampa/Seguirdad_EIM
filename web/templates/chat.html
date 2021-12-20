@@ -10,6 +10,10 @@
 		<script src="https://use.typekit.net/hoy3lrg.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="sweetalert2.all.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 		<link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
 		<link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
@@ -68,7 +72,7 @@
 		var lastRefresh;
 		var idUserConnected;
 		var idUserToTalk;
-
+		var key;
 		function startSession() {
 			console.log("startSession");
 			$.ajax({
@@ -98,10 +102,28 @@
 
 		function changeWindow(val) {
 			idUserToTalk = val;
+			(async () => {
+				const { value: file } = await Swal.fire({
+				title: 'Alerta',
+				text: 'Ingrese la llave correspondiente para continuar:',
+				icon: 'info',
+				input: 'file',
+				confirmButtonText: 'Aceptar'
+				})
+
+				if (file) {
+				const reader = new FileReader()
+					reader.onload = (e) => {
+						key = e.target.result;			
+					}	
+				reader.readAsText(file)
+				}
+			})()
 			console.log("changeWindow");
-			updateMessages();
-			scrollDown();
+			
 			setInterval(updateMessages, 6000);
+			//updateMessages();
+			scrollDown();
 		}
 
 		function talkTo(idUserToTalk_) {
@@ -112,8 +134,8 @@
 
 		function getDataChats(){
 			//var chatsDescargados = new Array();
-
 			console.log("getDataChats");
+			console.log("\n Your file has been readed"+key+"\n");
 			getNameUserToTalk(idUserToTalk);
 			var url = '/chat/getConversation/'.concat(idUserConnected.toString(),'/and/',idUserToTalk.toString());
 			$.ajax({
@@ -131,7 +153,7 @@
 						else{
 							whoIs = "replies"
 						}
-						$('<li class="'+whoIs+'"><img src="/static/images/user.png" alt="" /><p>' + response[i]["content"] + '</p></li>').appendTo($('.messages ul'));
+						$('<li class="'+whoIs+'"><img src="/static/images/user.png" alt="" /><p>' + dec(response[i]["content"],key) + '</p></li>').appendTo($('.messages ul'));
 						//chatsDescargados.push(response[i]["id"]);
 						}
 				},
@@ -222,9 +244,24 @@
 			}
 		};
 
+		function enc(plainText,SECRET){
+			var b64 = CryptoJS.AES.encrypt(plainText, SECRET).toString();
+			var e64 = CryptoJS.enc.Base64.parse(b64);
+			var eHex = e64.toString(CryptoJS.enc.Hex);
+			return eHex;
+		};
+
+		function dec(cipherText,SECRET){
+		var reb64 = CryptoJS.enc.Hex.parse(cipherText);
+		var bytes = reb64.toString(CryptoJS.enc.Base64);
+		var decrypt = CryptoJS.AES.decrypt(bytes, SECRET);
+		var plain = decrypt.toString(CryptoJS.enc.Utf8);
+		return plain;
+		};
 		function sendMessage(textMessage) {
+			var encrypted = enc(textMessage,key);
 			var message = JSON.stringify({
-						"content": textMessage,
+						"content": encrypted,
 						"user_from_id": idUserConnected,
 										"user_to_id": idUserToTalk
 						});
@@ -313,6 +350,7 @@
 							});
 						f = '<li class="contact" ><div class="wrap" onclick="changeWindow('+idUser+')" ><span class="contact-status online"></span><img src="/static/images/user.png" alt="" /> <div class="meta"> <p  class="name">';
 						f += lastname;
+						/*
 						if(lastMessageFrom == id){
 							who = 'You: ';
 						}else if (lastMessage != null) {
@@ -320,8 +358,17 @@
 						}else{
 							who = '¡Soy nuevo aquí!';
 							lastMessage = ''
+						}*/
+						if(lastMessageFrom == id){
+							who = 'Usted fué el último en enviar';
+						}else if (lastMessage != null) {
+							who = response[i]["name"]+" fué el último en enviar ";
+						}else{
+							who = '¡Soy nuevo aquí!';
+							//lastMessage = ''
 						}
-						f += '</p><p class="preview" id="lastChat"><span>'+who+'</span>'+lastMessage+'</p> </div> </div> </li>';
+				
+						f += '</p><p class="preview" id="lastChat"><span>'+who+'</span>'/*+dec(lastMessage,"osito200")*/+'</p> </div> </div> </li>';
 						i += 1;
 						$('#contacts ul').append(f);
 
